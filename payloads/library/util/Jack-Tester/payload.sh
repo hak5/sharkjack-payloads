@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Title:         Jack Tester
-# Author:        Hydrox
+# Author:        Mike Flynn // Hydrox
 # Version:       1.0
 #
 # Boots and looks for an ip address to test if the port is active on the LAN.
