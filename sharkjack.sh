@@ -167,7 +167,8 @@ function path_firmware_upgrade(){
 function download_latest_fw(){
   echo -e "\n Downloading latest Shark Jack firmware\n"
   echo -e "\n----------------------------------------\n"
-  curl https://downloads.hak5.org/api/devices/sharkjack/firmwares/latest --output upgrade.bin && echo -e "\n [+] Firmware download complete!\n\n" || echo -e "\n [!] Firmware Download Failed" && exitscript 1
+  curl https://downloads.hak5.org/api/devices/sharkjack/firmwares/latest --output upgrade.bin && echo -e "\n [+] Firmware download complete!\n\n" || err "[!] Firmware Download Failed"
+  connect_and_upgrade
 }
 
 function ls_cwd(){
