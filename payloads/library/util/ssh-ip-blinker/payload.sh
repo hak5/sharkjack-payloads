@@ -19,6 +19,7 @@
 # Cyan Fast Blinks..Last octet of IPv4 address
 
 LED SETUP
+NETMODE DHCP
 /etc/init.d/sshd start
 sleep 10
 LASTOCTET=$(ifconfig eth0 | grep "inet addr" | awk {'print $2'} | awk -F. {'print $4'})
