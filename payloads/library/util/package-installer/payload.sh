@@ -19,8 +19,8 @@ PACKAGE_TO_INSTALL="nano"
 LIST_PACKAGES=0                     
 LOG_DIR=/root/loot/package-installer
                                   
-function FAIL() { LED FAIL; exit }     
-function SUCCESS() { LED FINISH; exit }
+function FAIL() { LED FAIL; exit; }     
+function SUCCESS() { LED FINISH; exit; }
          
 LED SETUP      
 # Make log file  
