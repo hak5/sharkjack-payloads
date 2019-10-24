@@ -130,7 +130,7 @@ function get_payload_path(){
     sleep 2
     main_menu
   else
-    [[ -e $PAYLOADPATH ]] && printf "\n%s\n" "[!] $PAYLOADPATH does not exist" && sleep 2 && main_menu
+    [[ ! -e $PAYLOADPATH ]] && printf "\n%s\n" "[!] $PAYLOADPATH does not exist" && sleep 2 && main_menu
   fi
 }
 
