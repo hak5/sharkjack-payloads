@@ -13,6 +13,7 @@
 #
 # LED SETUP (Magenta)... Setting logs and waiting for IP address from DHCP
 # LED FAIL (Red Slow Blink)... Failed to update opkg or install package
+# LED SPECIAL (Cyan Blink)... Saving package list to log file
 # LED FINISH (Green Fast Blink to Solid)... Package install or list successful
 
 PACKAGE_TO_INSTALL="nano"
