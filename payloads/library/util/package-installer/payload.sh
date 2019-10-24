@@ -7,7 +7,7 @@
 # Description:	This payload will install the specified package using opkg.
 # Use this to provision your Shark Jack for payloads with dependencies.
 # Set PACKAGE_TO_INSTALL to the package you wish to install - for example
-# PACKAGE_TO_INSTALL="nano" will install the best text editor on Earth ;)
+# PACKAGE_TO_INSTALL="vim" will install the best text editor on Earth ;)
 # For a list of available packages, set LIST_PACKAGES to 1 - the results
 # will be saved to a log file in the loot directory. Requires Internet.
 #
@@ -16,7 +16,7 @@
 # LED SPECIAL (Cyan Blink)... Saving package list to log file
 # LED FINISH (Green Fast Blink to Solid)... Package install or list successful
 
-PACKAGE_TO_INSTALL="nano"
+PACKAGE_TO_INSTALL="vim"
 LIST_PACKAGES=0                     
 LOG_DIR=/root/loot/package-installer
                                   
