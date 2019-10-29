@@ -92,7 +92,7 @@ function run() {
 function pastebin () {	
 	#Send the nmap scan file text to the pastebin via the api
      TEXT=$(<$LOOT_DIR/nmap-scan_$SCAN_M.txt)
-     curl -d 'api_paste_code='"$TEXT"'' -d 'api_dev_key='"$API_KEY"'' -d 'api_user_key='"$LOGIN_KEY"'' -d 'api_option=paste' -d 'api_paste_private=2' 'http://pastebin.com/api/api_post.php'
+     curl -d 'api_paste_code='"$TEXT"'' -d 'api_dev_key='"$API_KEY"'' -d 'api_user_key='"$LOGIN_KEY"'' -d 'api_option=paste' -d 'api_paste_private=2' 'https://pastebin.com/api/api_post.php'
 }
 
 function login(){
