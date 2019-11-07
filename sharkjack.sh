@@ -167,7 +167,8 @@ function path_firmware_upgrade(){
 function download_latest_fw(){
   echo -e "\n Downloading latest Shark Jack firmware\n"
   echo -e "\n----------------------------------------\n"
-  curl https://downloads.hak5.org/api/devices/sharkjack/firmwares/latest --output upgrade.bin && echo -e "\n [+] Firmware download complete!\n\n" || err "[!] Firmware Download Failed"
+  curl -L https://downloads.hak5.org/api/devices/sharkjack/firmwares/latest --output shark-upgrade.bin && echo -e "\n [+] Firmware download complete!\n\n" || err "[!] Firmware Download Failed"
+  FWFILEPATH="shark-upgrade.bin"
   connect_and_upgrade
 }
 
@@ -233,14 +234,16 @@ function do_sysupgrade(){
 
 function upgrade_firmware(){
   printf "\n%s\n\n" "Copying Firmware to Shark Jack..."
-  EXPANDEDPATH=$(echo $FWFILEPATH |cd)
-  scp $EXPANDEDPATH root@172.16.24.1:/tmp/upgrade.bin
+  scp $FWFILEPATH root@172.16.24.1:/tmp/upgrade.bin
 
   cleart
   printf "\n%s\n" "ONCE STARTED - DO NOT UNPLUG THE DEVICE FROM NETWORK OR POWER"
   printf "\n%s\n" "[!] SHARK JACK MUST BE POWERED OVER USB-C [!]"
   printf "\n%s\n" "[!][!] Attempting Firmware Upgrade ON BATTERY will likely brick your device. [!][!]"
-  echo -e "\nFirmware File to Flash: $EXPANDEDPATH"
+  echo -e "\nFirmware File to Flash: $FWFILEPATH"
+  ls -lah $FWFILEPATH
+  echo "Checksum:"
+  sha256sum $FWFILEPATH
   echo -e "\nIs your Shark Jack connected to a good power source and is the file listed above correct?"
   printf "\n\
   [$(tput bold)Y$(tput sgr0)]es / Continue\n\
