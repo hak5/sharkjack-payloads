@@ -19,7 +19,11 @@
 # Cyan Fast Blinks..Last octet of IPv4 address
 
 LED SETUP
-NETMODE DHCP
+# Set NETMODE to DHCP_CLIENT for Shark Jack v1.1.0+
+NETMODE DHCP_CLIENT
+# Wait for an IP address to be obtained
+while ! ifconfig eth0 | grep "inet addr"; do sleep 1; done
+# Start SSH server
 /etc/init.d/sshd start
 sleep 10
 LASTOCTET=$(ifconfig eth0 | grep "inet addr" | awk {'print $2'} | awk -F. {'print $4'})
