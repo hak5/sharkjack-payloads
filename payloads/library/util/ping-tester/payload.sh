@@ -14,6 +14,9 @@
 RESOURCE_TO_PING="192.168.86.27"
 
 LED SETUP
+# Set NETMODE to DHCP_CLIENT for Shark Jack v1.1.0+
+NETMODE DHCP_CLIENT
+# Wait for an IP address to be obtained
 while ! ifconfig eth0 | grep "inet addr"; do sleep 1; done
 sleep 2
 ping -c1 $RESOURCE_TO_PING && LED FINISH || LED FAIL
