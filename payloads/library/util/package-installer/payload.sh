@@ -23,13 +23,15 @@ LOG_DIR=/root/loot/package-installer
 function FAIL() { LED FAIL; exit; }     
 function SUCCESS() { LED FINISH; exit; }
          
-LED SETUP      
-# Make log file  
-mkdir -p $LOG_DIR                                                
+LED SETUP
+# Set NETMODE to DHCP_CLIENT for Shark Jack v1.1.0+
+NETMODE DHCP_CLIENT
+# Make log file
+mkdir -p $LOG_DIR
 LOG_FILE="package-installer_$(find $LOG_DIR -type f | wc -l).log"
-DISK_SPACE_BEFORE=$(df -h | grep overlayfs | awk {'print $4'})   
-LOG="$LOG_DIR/$LOG_FILE"                                      
-                                         
+DISK_SPACE_BEFORE=$(df -h | grep overlayfs | awk {'print $4'})
+LOG="$LOG_DIR/$LOG_FILE"
+
 # Wait until Shark Jack has an IP address                                             
 while [ -z "$IPADDR" ]; do sleep 1 && IPADDR=$(ifconfig eth0 | grep "inet addr"); done
                                                                                       
