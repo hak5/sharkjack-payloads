@@ -78,6 +78,11 @@ function finish() {
 function setup() {
 	LED SETUP
 	
+	# Set NETMODE to DHCP_CLIENT for Shark Jack v1.1.0+
+	NETMODE DHCP_CLIENT
+	# Wait for an IP address to be obtained
+	while ! ifconfig eth0 | grep "inet addr"; do sleep 1; done
+	
 	# Configure DNS Server
 	echo "nameserver 1.1.1.1" > $DNS_FILE
 	
