@@ -17,7 +17,10 @@ function find_subnet() {
 
 function run() {
   LED SETUP
-
+  
+  # Set NETMODE to DHCP_CLIENT for Shark Jack v1.1.0+
+  NETMODE DHCP_CLIENT
+  
   # Find IP address and subnet
   for i in {1..30}; do
     sleep 1 && find_subnet
