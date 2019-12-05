@@ -11,11 +11,11 @@
 # Performs an IFconfig and ip addr show and logs it to a text file
 # Performs a traceroute to 8.8.8.8 and logs it to a text file
 # Performs a public IP address lookup via curl and icanhazip.com and logs it to a text file
-# Sends all of the created text files via email to the address set with MAIL_RCPT
+# Optionally sends all of the created text files via email to the address set with MAIL_RCPT
 # 
 # A nameserver, 1.1.1.1, is set for the payload in case you want to run it in arming mode.
 #
-# This payload requires you to have curl, lldpd, and msmtp mutt already installed and configured via opkg
+# This payload requires you to have curl, lldpd, and (optionally) msmtp mutt already installed and configured via opkg
 # 
 # Guide for MSMTP MUTT can be found here https://forum.openwrt.org/t/openwrt-how-to-send-mail-with-attachment-with-mutt-and-msmtp-gmail/45844
 #
@@ -26,9 +26,9 @@
 # See nmap --help for options. Default "-sP" ping scans the address space for
 # fast host discovery.
 #
-# Please enter your email details below
+# Please enter your email details below. Set SEND_EMAIL=y to send e-mail.
 #
-
+SEND-EMAIL=n
 MAIL_RCPT=EnterEmail@Here.com
 
 NMAP_OPTIONS="-sP"
@@ -46,6 +46,7 @@ ICANHAZIP_DIR=/etc/shark/icanhazip
 
 DNS_FILE=/etc/resolv.conf
 MUTT_FILE=/root/.muttrc
+NAMESERVER=1.1.1.1
 
 
 function finish() {
@@ -65,8 +66,10 @@ function finish() {
  
  
 	#Email the loot as an attachment
-	email
-	sleep 5s
+	if [ $SEND_EMAIL = "y" ]; then
+		email
+		sleep 5s
+	fi
 
 	LED FINISH
 	sleep 1s
@@ -84,7 +87,7 @@ function setup() {
 	while ! ifconfig eth0 | grep "inet addr"; do sleep 1; done
 	
 	# Configure DNS Server
-	echo "nameserver 1.1.1.1" > $DNS_FILE
+	echo "nameserver " $NAMESERVER > $DNS_FILE
 	
 	# Create loot directory
 	mkdir -p $LOOT_DIR_NMAP &> /dev/null
@@ -138,7 +141,7 @@ function setup() {
 	fi
 	
 	
-		# Create icanhazip loot directory
+	# Create icanhazip loot directory
 	mkdir -p $LOOT_DIR_ICANHAZIP &> /dev/null
 	
 	#Create tmp icanhazip directory
