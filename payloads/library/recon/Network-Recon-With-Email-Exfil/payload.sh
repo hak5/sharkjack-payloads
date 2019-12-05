@@ -2,10 +2,13 @@
 #
 # Title:         Network Recon Payload with email exfiltration
 # Author:        Topknot (Based on the orignial HAK5 sample payload and MonsieurMarc Sample Nmap Payload with Patebil exfiltration)
-# Version:       1.0
+# Version:       1.2
 #
 # This payload:
 # 
+# Version 1.1: Make e-mail optional, set DNS as variable
+# Version 1.2: Add ability to change system hostname
+#
 # Performs an nmap ping scan of the local subnet and logs it to a text file
 # Pulls LLDP neighbor and switch information and logs it to a text file
 # Performs an IFconfig and ip addr show and logs it to a text file
@@ -13,7 +16,8 @@
 # Performs a public IP address lookup via curl and icanhazip.com and logs it to a text file
 # Optionally sends all of the created text files via email to the address set with MAIL_RCPT
 # 
-# A nameserver, 1.1.1.1, is set for the payload in case you want to run it in arming mode.
+# A nameserver, 1.1.1.1 by default, is set for the payload in case you want to run it in arming mode.
+# The HOSTNAME variable can be set to change the system hostname, helping disguise
 #
 # This payload requires you to have curl, lldpd, and (optionally) msmtp mutt already installed and configured via opkg
 # 
@@ -28,7 +32,7 @@
 #
 # Please enter your email details below. Set SEND_EMAIL=y to send e-mail.
 #
-SEND-EMAIL=n
+SEND_EMAIL=n
 MAIL_RCPT=EnterEmail@Here.com
 
 NMAP_OPTIONS="-sP"
@@ -47,6 +51,7 @@ ICANHAZIP_DIR=/etc/shark/icanhazip
 DNS_FILE=/etc/resolv.conf
 MUTT_FILE=/root/.muttrc
 NAMESERVER=1.1.1.1
+HOSTNAME=shark
 
 
 function finish() {
@@ -153,6 +158,10 @@ function setup() {
 		touch $ICANHAZIP_FILE && echo 0 > $ICANHAZIP_FILE
 	fi
 	
+	# Set system hostname
+	uci set system.@system[0].hostname=$HOSTNAME
+	uci commit system
+	/etc/init.d/system reload
 	
 	# Find IP address and subnet
 	while [ -z "$SUBNET" ]; do
