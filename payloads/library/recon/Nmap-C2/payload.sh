@@ -38,9 +38,11 @@ function finish() {
 	sleep 1
 
 	# C2 Connect and send files
-	LED W FAST
-	c2_connect
-	sleep 1
+	if [[ -f "$C2PROVISION" ]]; then
+		LED W FAST
+		c2_connect
+		sleep 1
+	fi
 
 	LED FINISH
 	sleep 1
@@ -56,8 +58,8 @@ function setup() {
 	
 	# Set NETMODE to DHCP_CLIENT for Shark Jack v1.1.0+
 	NETMODE DHCP_CLIENT
-	# Wait for an IP address to be obtained
-	while ! ifconfig eth0 | grep "inet addr"; do sleep 1; done
+	# Wait for an IP address to be obtained - Blink cyan while waiting for IP
+	while ! ifconfig eth0 | grep "inet addr"; do sleep 1;LED C SOLID;sleep .1;LED SETUP; done
 
 	# Create tmp scan directory
 	mkdir -p $SCAN_DIR &> /dev/null
@@ -71,8 +73,6 @@ function setup() {
 	i=0
 	# Find IP address and subnet
 	while [ -z "$SUBNET" ]; do
-		# Indication it is searching for IP/Subnet
-		LED B SOLID;sleep .25;LED SETUP
 		sleep 1 && find_subnet
 	done
 }
