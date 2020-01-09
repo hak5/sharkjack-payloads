@@ -73,6 +73,9 @@ function locate_interface_to_shark() {
   while [[ -z $IFACE ]]; do
     printf "%s" .
     IFACE=$(ip route show to match 172.16.24.1 2>/dev/null| grep -i 172.16.24.1 | cut -d ' ' -f3 | grep -v 172.16.24.1)
+    if [[ -z $IFACE ]]; then
+	IFACE=$(ip route show to match 172.16.24.1 2>/dev/null| grep -i 172.16.24.0 | cut -d ' ' -f3 | grep -v 172.16.24.1)
+    fi
     sleep 1
   done
   echo -e "\n"
