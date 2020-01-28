@@ -51,7 +51,6 @@ function os_check() {
 function root_check() {
   if [[ "$EUID" -ne 0 ]]; then
     printf "\n%s\n" "Please re-run as root"
-    usage
     exitscript 1
   fi
 }
