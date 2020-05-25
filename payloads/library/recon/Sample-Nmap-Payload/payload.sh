@@ -26,6 +26,7 @@ function finish() {
 	kill $1 &> /dev/null
 
 	# Sync filesystem
+	rm $SCAN_FILE
 	echo $SCAN_M > $SCAN_FILE
 	sync
 	sleep 1
