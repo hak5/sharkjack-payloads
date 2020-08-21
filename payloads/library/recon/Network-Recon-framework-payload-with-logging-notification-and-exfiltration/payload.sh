@@ -1,12 +1,16 @@
 #!/bin/bash
 #
-# Title:		network_recon.sh   
-# Description:		Swiss knife network reconnaissance payload with options for SSH server, Cloud C2 exfiltration
-#			and led blinking for IP address, payload is based on various sample payloads from HAK5, MonsieurMarc,
-#			Topknot and others. This payload script has been organized in a way it is easy to be extended with
-#			additional recon (attack) functions.
-# Author:		Robert Coemans
-# Version:		1.0 (19-08-2020)
+# Title:		payload.sh   
+# Description:		Swiss knife network reconnaissance payload with options for loot capturing (e.g. DIG, NMAP, IFCONFIG, ARP-SCAN, LLDP),
+#			notification (e.g. Homey, Pushover (the best push notfications service!), Slack), exfiltration (e.g. Cloud C2, Pastebin,
+#			Slack) and led blinking for IP address. Payload is based on various sample payloads from HAK5, MonsieurMarc, Topknot and
+#			others.
+#			The script has been created in a modular fashion which allows easy extending the script with new functions (e.g. recon,
+#			notification or exfiltration functions). The script furthermore incorporates logic to determine already existing loot
+#			folders and create a new (unique) loot folder every time the script is executed.
+# Author:		Robert Coemans (robert[at]brainstoday.com)
+# Version:		1.0 (19-08-2020), initial version
+#			1.1 (21-08-2020), added Stealth Mode and fixed LLDP attack function
 # Category:		Recon
 #
 # Dependencies: this payload requires you to have the following packages already installed and configured via 'opkg install' (do 'opkg update' first):
@@ -38,16 +42,13 @@
 # - "-Pn"					No ping
 # - "-O"					Enable OS detection
 # - "-A"					Enable OS detection, version detection, script scanning and traceroute
-#
-# To do / to be fixed
-# - Function to find neighbouring subnets
-# - LLDPCLI not working with Unifi
 
 # ****************************************************************************************************
 # Configuration
 # ****************************************************************************************************
 
 # Setup toggles
+STEALTH_MODE=false
 CHANGE_HOSTNAME=false
 CHANGE_MAC_ADDRESS=false
 LOOKUP_SUBNET=true
@@ -366,6 +367,11 @@ function GRAB_LLDP_LOOT() {
 	if [ "$GRAB_LLDP_LOOT" = "true" ]; then
 		LLDP_LOOT_FILE=$LOOT_DIR/lldp.txt
 		touch $LLDP_LOOT_FILE
+		# Assign LLDPD to eth0 and restart the LLDPD service (without this it will fail)
+		lldpd -I eth0
+		sleep 5
+		/etc/init.d/lldpd restart
+		sleep 5
 		echo "****************************************************************************************************" >> $LLDP_LOOT_FILE
 		echo "LLDP neighbor details (lldpcli show neighbor details)" >> $LLDP_LOOT_FILE
 		echo "****************************************************************************************************" >> $LLDP_LOOT_FILE
@@ -620,7 +626,11 @@ function BLINK_INTERNAL_IP_ADDRESS() {
 # ****************************************************************************************************
 
 # Setup
-LED SETUP
+if [ "$STEALTH_MODE" = "true" ]; then
+	LED OFF
+else
+	LED SETUP
+fi
 CREATE_SCAN_FOLDER					# Checks loot folder with highest index number in loot root folder and creates the next loot folder for current scan
 INITIALIZE_LOG_FILE					# Initialize the log file
 SET_NETMODE						# Set NETMODE to DHCP_CLIENT (for SharkJack v1.1.0+)
@@ -637,7 +647,9 @@ RECON_STARTED_NOTIFICATION
 START_CLOUD_C2_CLIENT
 
 # Attack
-LED ATTACK
+if [ ! "$STEALTH_MODE" = "true" ]; then
+	LED ATTACK
+fi
 GRAB_IFCONFIG_LOOT
 GRAB_TRACEROUTE_LOOT
 GRAB_DNS_INFORMATION_LOOT
@@ -649,7 +661,9 @@ GRAB_NMAP_INTERESTING_HOSTS_LOOT
 GRAB_DIG_LOOT
 
 # Finish
-LED STAGE2
+if [ ! "$STEALTH_MODE" = "true" ]; then
+	LED STAGE2
+fi
 echo "Free diskspace after actions: $(df -h | grep overlayfs | awk {'print $4'})" >> $LOG_FILE
 echo "Recon script took $SECONDS seconds" >> $LOG_FILE
 EXFIL_TO_CLOUD_C2
@@ -662,9 +676,10 @@ sync							# Sync filesystem in order to prevent data loss
 # Prevent logging after this line!
 # ****************************************************************************************************
 
-BLINK_INTERNAL_IP_ADDRESS
-LED FINISH
-
+if [ ! "$STEALTH_MODE" = "true" ]; then
+	BLINK_INTERNAL_IP_ADDRESS
+	LED FINISH
+fi
 if [ "$HALT_SYSTEM_WHEN_DONE" = "true" ]; then
 	halt
 fi
