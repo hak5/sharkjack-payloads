@@ -59,17 +59,17 @@ PUSHOVER_DEVICE="{your-device}"			# Multiple devices may be separated by a comma
 # ****************************************************************************************************
 
 function CHECK_INPUT_PARAM() {
-	if [ "$1" == "" ]; then
-		echo "Please specify the backup.zip file to be restored (e.g. "bash ./restore.sh /tmp/1-20200101-SharkJack-backup.zip")."
+	if [ $# -lt 1 ]; then
+		echo "Please specify the backup.zip file to be restored (e.g. "bash $0 /tmp/1-20200101-SharkJack-backup.zip")."
 		exit
 	elif [ ! -f "$1" ]; then
-		echo "$1 is not an existing file, please specify a backup.zip file to be restored (e.g. "bash ./restore.sh /tmp/1-20200101-SharkJack-backup.zip")."
+		echo "$1 is not an existing file, please specify a backup.zip file to be restored (e.g. "bash $0 /tmp/1-20200101-SharkJack-backup.zip")."
 		exit
 	elif [ "${1##*.}" == "zip" ]; then
 		BACKUP_FILENAME=$(basename $1)
 		BACKUP_FILENAME=${BACKUP_FILENAME%.*}
 	else
-		echo "$1 is not an zip file, please specify a backup.zip file to be restored (e.g. "bash ./restore.sh /tmp/1-20200101-SharkJack-backup.zip")."
+		echo "$1 is not an zip file, please specify a backup.zip file to be restored (e.g. "bash $0 /tmp/1-20200101-SharkJack-backup.zip")."
 		exit
 	fi
 	return
