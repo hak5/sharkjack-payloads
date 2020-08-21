@@ -2,7 +2,11 @@
 
 Author: Robert Coemans
 
-Version: 1.0
+## Revision history
+
+| Version | Date       | Author         | Changes                                                    |
+| ------- | ---------- | -------------- | ---------------------------------------------------------- |
+| 1.0     | 2020-08-20 | Robert Coemans | Initial version of the file.                               |
 
 ## Description
 
