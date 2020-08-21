@@ -1,21 +1,16 @@
 # Network reconnaissance payload for Shark Jack
 
----
-
 Author: Robert Coemans
+
 Version: 1.0
 
 ## Description
 
----
-
-Swiss knife network reconnaissance payload with options for SSH server, Cloud C2 exfiltration and led blinking for IP address, payload is based on various sample payloads from HAK5, MonsieurMarc, Topknot and others. This payload script has been organized in a way it is easy to be extended with additional recon (attack) functions.
+Swiss knife network reconnaissance payload with options for loot capturing (e.g. DIG, NMAP, IFCONFIG, ARP-SCAN, LLDP), notification (e.g. Homey, Pushover (the best push notfications service!), Slack), exfiltration (e.g. Cloud C2, Pastebin, Slack) and led blinking for IP address. Payload is based on various sample payloads from HAK5, MonsieurMarc, Topknot and others.
 
 The script has been created in a modular fashion which allows easy extending the script with new functions (e.g. recon, notification or exfiltration functions). The script furthermore incorporates logic to determine already existing loot folders and create a new (unique) loot folder every time the script is executed.
 
 ## payload.sh
-
----
 
 ### Use
 
@@ -140,6 +135,4 @@ Finished          | Green very fast blinking followed by solid [LED FINISH]
 
 ## Discussion
 
----
-
-[Hak5 Forum Thread to be added]()
+[Hak5 Forum Thread](https://forums.hak5.org/topic/52883-payload-backup-and-restore-shell-scripts-for-shark-jack/)
