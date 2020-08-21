@@ -2,7 +2,12 @@
 
 Author: Robert Coemans
 
-Version: 1.0
+## Revision history
+
+| Version | Date       | Author         | Changes                                                    |
+| ------- | ---------- | -------------- | ---------------------------------------------------------- |
+| 1.0     | 2020-08-19 | Robert Coemans | Initial version of the file.                               |
+| 1.1     | 2020-08-21 | Robert Coemans | Added Stealth Mode and fixed LLDP attack function.         |
 
 ## Description
 
@@ -22,6 +27,7 @@ This section explains the `payload.sh` shell script.
 
 Toggle                               | Description                                                                                         | Values
 ------------------------------------ | --------------------------------------------------------------------------------------------------- | ---
+STEALTH_MODE                         | Turn LED off during attack                                                                          | true/false
 CHANGE_HOSTNAME                      | Use an alternative hostname by using the variable `HOSTNAME`                                        | true/false
 CHANGE_MAC_ADDRESS                   | Use an alternative mac address by using the variable `MAC_ADDRESS`                                  | true/false
 LOOKUP_SUBNET                        | Lookup the subnet                                                                                   | true/false
@@ -98,7 +104,7 @@ This script depends on the following packages:
 - bind-host
 - libustream-openssl
 
-Not depended on but good to have:
+Not dependent on but good to have:
 
 - nano
 
