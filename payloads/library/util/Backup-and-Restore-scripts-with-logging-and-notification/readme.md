@@ -1,13 +1,10 @@
 # Backup and Restore shell scripts for Shark Jack
 
----
-
 Author: Robert Coemans
+
 Version: 1.0
 
 ## Description
-
----
 
 Being tired of having to re-image your Shark Jack and going through the hassle of backing up and restoring the device? These shell scripts will help you to backup and restore all important data on your Shark Jack.
 
@@ -15,7 +12,7 @@ The scripts has been created in a modular fashion which allows easy extending th
 
 ## backup.sh
 
----
+This section describes the `backup.sh` shell script.
 
 ### Use
 
@@ -68,6 +65,10 @@ Finished      | Green very fast blinking followed by solid [LED FINISH]
 
 ## restore.sh
 
+This section describes the `restore.sh` shell script.
+
+### Use
+
 1. Copy a backup created with `backup.sh` to the Shark Jack with: `scp backup.zip root@172.16.24.1:/destination/folder/` example: `scp 1-20200101-SharkJack-backup.zip root@172.16.24.1:/tmp/`
 1. Execute the script with: `bash ./restore.sh /path/to/backup.zip` example: `bash ./restore.sh /tmp/1-20200101-SharkJack-backup.zip`
 
@@ -119,6 +120,4 @@ Finished      | Green very fast blinking followed by solid [LED FINISH]
 
 ## Discussion
 
----
-
-[Hak5 Forum Thread to be added]()
+[Hak5 Forum Thread](https://forums.hak5.org/topic/52883-payload-backup-and-restore-shell-scripts-for-shark-jack/)
