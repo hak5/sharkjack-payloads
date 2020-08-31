@@ -152,7 +152,7 @@ function connect_and_upgrade(){
 }
 
 function path_firmware_upgrade(){
-  read -p "Path (including filename) to Shark Jack firmware file (q to return to menu): " FWFILEPATH
+  read -p "Path (including filename) to Shark Jack firmware file (q to return to menu): " -i "./" -e FWFILEPATH
   if [[ $FWFILEPATH == "q" ]]; then
     cleart
     printf "\n%s\n" "[!] Returning to main menu..."
@@ -302,7 +302,7 @@ function setup_shark(){
     ssh-keygen -t rsa -b 4096
   fi
 
-  read -p "FULL PATH to your SSH key or hit enter to use the default ~/.ssh/id_rsa.pub (q to return to menu): " SSHKEYPATH
+  read -p "FULL PATH to your SSH key or hit enter to use the default ~/.ssh/id_rsa.pub (q to return to menu): "  -i "./" -e SSHKEYPATH
   if [[ $SSHKEYPATH == "q" ]]; then
     cleart
     printf "\n%s\n" "[!] Returning to main menu..."
