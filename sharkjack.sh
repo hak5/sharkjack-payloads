@@ -21,13 +21,13 @@ function cleart() {
 
 function banner(){
   cleart
-  echo -e "\n\n\n\n########################################################\n\n\n"
+  echo -e "\n\n\n\n############################################################\n\n\n"
 printf "\
     \_____)\_____      Shark Jack      _____/(_____/
     /--v____ __°<       by Hak5        >°__ ____v--\\
            )/                              \(
 "
-  echo -e "\n\n########################################################\n\n"
+  echo -e "\n\n############################################################\n\n"
 }
 
 function iptables_check() {
@@ -325,7 +325,7 @@ function main_menu() {
       echo -e "\n\n OSX DETECTED \n\n"
    fi
    printf "\n\
-   Press the highlighted key to select an option (example: press C to connect)\n\n\
+   Press the highlighted key to select an option \n   (example: press C to connect)\n\n\
    [$(tput bold)C$(tput sgr0)]onnect - get a shell on your Shark Jack\n\
    [$(tput bold)U$(tput sgr0)]pgrade firmware\n\
    [$(tput bold)P$(tput sgr0)]ush payload to Shark Jack\n\
