@@ -97,7 +97,7 @@ function run() {
 function Telegram() {
 		# Curl magic
 		curl -s -X POST $URL -d chat_id=$ID_CHANEL -d text="$MENSAJE"
-		curl -v -F "chat_id=YOUR CHANEL ID" -F document=@$LOOT_DIR/nmap-scan_$SCAN_M.txt $URL_FILE
+		curl -v -F "chat_id=$ID_CHANEL" -F document=@$LOOT_DIR/nmap-scan_$SCAN_M.txt $URL_FILE
 }
 
 
