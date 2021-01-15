@@ -62,6 +62,13 @@ function setup() {
 	# Create tmp scan directory
 	mkdir -p $SCAN_DIR &> /dev/null
 
+        # Install curl if it does not exist                       
+        if [ ! -f /usr/bin/curl ]; then                           
+                opkg update >> /root/opkgupdate.log 2>&1          
+                opkg list >> /root/opkglist.log 2>&1              
+                opkg install curl >> /root/opkginstall.log 2>&1     
+        fi
+
 	# Create tmp scan file if it doesn't exist
 	SCAN_FILE=$SCAN_DIR/scan-count
 	if [ ! -f $SCAN_FILE ]; then
