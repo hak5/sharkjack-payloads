@@ -100,7 +100,7 @@ function locate_shark(){
 function ssh_connect(){
   printf "\n\tLogging into Shark Jack...\n\n"
   printf "\n\t[!] Ensure Shark Jack is in Arming Mode (middle switch position) or connection will be refused...\n\n\n"
-	ssh root@172.16.24.1 || return 1
+        ssh root@172.16.24.1 || return 1
 }
 
 function connect() {
@@ -121,6 +121,45 @@ function cleanup() {
   printf "\n%s\n" "[!] Cleaning up..."
 }
 
+function check_suffixdevice(){
+        if [[ -f $DEVICECONFIGPATH ]]; then
+                if [[ $DEVICECONFIGPATH != "*/device.config" ]]; then
+                        printf "\n%s\n" "[!] Directory or File was not a valid device.config file."
+                        printf "\n%s\n" "[!] Returning to Main Menu."
+                        main_menu;
+                fi
+        fi
+        if [[ -d $DEVICECONFIGPATH ]]; then
+                printf "\n%s\n" "[!] Defaulting to device.config since input was a directory."
+                DEVICECONFIGPATH=$(echo -e "$DEVICECONFIGPATH/device.config")
+        fi
+}
+
+function check_suffixpayload(){
+        if [[ -f $PAYLOADPATH ]]; then
+                if [[ $PAYLOADPATH != "*/payload.txt" || $PAYLOADPATH != "*/payload.sh" ]]; then
+                        printf "\n%s\n" "[!] Defaulting to payload.txt since input was a not a normal payload file."
+                        PAYLOADPATH=$(echo -e "$PAYLOADPATH/payload.txt")
+                fi
+        fi
+        if [[ -d $PAYLOADPATH ]]; then
+                printf "\n%s\n" "[!] Defaulting to payload.txt since input was a directory."
+                PAYLOADPATH=$(echo -e "$PAYLOADPATH/payload.txt")
+        fi
+}
+
+function get_deviceconfig_path(){
+  read -p "FULL PATH to the downloaded device.config file (q to return to menu): " DEVICECONFIGPATH
+  if [[ $DEVICECONFIGPATH == "q" ]]; then
+    cleart
+    printf "\n%s\n" "[!] Returning to main menu..."
+    sleep 2
+    main_menu
+  else
+    [[ ! -e $DEVICECONFIGPATH ]] && printf "\n%s\n" "[!] $DEVICECONFIGPATH does not exist" && sleep 2 && main_menu
+  fi
+}
+
 function get_payload_path(){
   read -p "FULL PATH to payload (q to return to menu): " PAYLOADPATH
   if [[ $PAYLOADPATH == "q" ]]; then
@@ -133,14 +172,25 @@ function get_payload_path(){
   fi
 }
 
+function push_deviceconfig(){
+  echo -e "\n [+] Push device.config to Shark Jack"
+  echo -e "\n----------------------------------------"
+  get_deviceconfig_path
+  locate_shark
+  check_suffixdevice
+  echo -e "\n [+] Pushing device.config to device..."
+  scp -r "$DEVICECONFIGPATH" "root@172.16.24.1:/etc/device.config" && echo -e "\n [+] Device.config copied to Shark" || echo -e "\n [!] ERROR copying device.config to Shark"
+  exitscript 0
+}
+
 function push_payload(){
   echo -e "\n [+] Push Payload to Shark Jack"
   echo -e "\n----------------------------------------"
   get_payload_path
   locate_shark
+  check_suffixpayload
   echo -e "\n [+] Pushing payload to device..."
-  EXPANDEDPATH=$(echo $PAYLOADPATH |cd)
-  scp -r $EXPANDEDPATH root@172.16.24.1:/root/payload/payload.txt && echo -e "\n [+] Payload copied to Shark" || echo -e "\n [!] ERROR copying paylod to Shark"
+  scp -r "$PAYLOADPATH" "root@172.16.24.1:/root/payload/payload.txt" && echo -e "\n [+] Payload copied to Shark" || echo -e "\n [!] ERROR copying payload to Shark"
   exitscript 0
 }
 
@@ -329,6 +379,7 @@ function main_menu() {
    [$(tput bold)C$(tput sgr0)]onnect - get a shell on your Shark Jack\n\
    [$(tput bold)U$(tput sgr0)]pgrade firmware\n\
    [$(tput bold)P$(tput sgr0)]ush payload to Shark Jack\n\
+   Push [$(tput bold)D$(tput sgr0)]evice.config to Shark Jack\n\
    [$(tput bold)G$(tput sgr0)]et loot saved on Shark Jack\n\n\
    [$(tput bold)R$(tput sgr0)]eset known_hosts keys for the Shark Jack on this system\n\
    [$(tput bold)S$(tput sgr0)]etup ssh keys for easy access\n\
@@ -337,11 +388,12 @@ function main_menu() {
    read -r -sn1 key
    case "$key" in
           [cC]) connect;;
- 	  [uU]) upgrade_process_menu;;
-	  [pP]) push_payload;;
+          [uU]) upgrade_process_menu;;
+          [pP]) push_payload;;
           [gG]) get_loot;;
           [rR]) reset_key;;
           [sS]) setup_shark;;
+          [dD]) push_deviceconfig;;
           [qQ]) exitscript 0;;
           *) main_menu;;
    esac
