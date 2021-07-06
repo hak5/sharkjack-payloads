@@ -55,7 +55,7 @@ function setup() {
 	LED SETUP
 	# Create loot directory
 	mkdir -p $LOOT_DIR &> /dev/null
-	
+
 	# Set NETMODE to DHCP_CLIENT for Shark Jack v1.1.0+
 	NETMODE DHCP_CLIENT
 	# Wait for an IP address to be obtained
