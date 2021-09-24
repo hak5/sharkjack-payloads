@@ -27,7 +27,7 @@ COUNT=$(($(ls -l $LOOT_DIR/*.txt | wc -l)+1))
 NETMODE DHCP_CLIENT
 SERIAL_WRITE [*] Waiting for IP from DHCP
 while [ -z "$SUBNET" ]; do
-  sleep 1 && SUBNET=$(ip addr | grep -i eth0 | grep -i inet | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}[\/]{1}[0-9]{1,2}" | sed 's/\.[0-9]*\//\.0\//')
+  sleep 1 && SUBNET=$(ip addr | grep -i eth0 | grep -i inet | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}[\/]{1}[0-9]{1,2}")
 done
 echo "Recieved IP address from DHCP" >> /tmp/payload-debug.log
 
