@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash/
 # Shark Jack
 #
 # sharkjack.sh - Helper script for linux/OSX for convenient interaction with your Hak5 Shark Jack
