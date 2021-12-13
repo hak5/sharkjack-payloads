@@ -439,6 +439,7 @@ function GRAB_NMAP_INTERESTING_HOSTS_LOOT() {
 		nmap $NMAP_OPTIONS_INTERESTING_HOSTS ${INTERESTING_HOSTS[@]} >> $NMAP_INTERESTING_HOSTS_LOOT_FILE && echo "Nmap scan ${#INTERESTING_HOSTS[@]} interesting host with nmap options: \"$NMAP_OPTIONS_INTERESTING_HOSTS\" executed succesfully" >> $LOG_FILE || echo "Nmap scan ${#INTERESTING_HOSTS[@]} interesting host with nmap options: \"$NMAP_OPTIONS_INTERESTING_HOSTS\" failed" >> $LOG_FILE
 	fi
 	return
+}
 
 function GRAB_DIG_LOOT() {
 	if [ "$GRAB_DIG_LOOT" = "true" ]; then
