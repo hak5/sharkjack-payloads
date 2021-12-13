@@ -407,6 +407,8 @@ function GRAP_ARP_SCAN_LOOT() {
 function GRAB_NMAP_LOOT() {
 	if [ "$GRAB_NMAP_LOOT" = "true" ]; then
 		NMAP_LOOT_FILE=$LOOT_DIR/nmap.txt
+		### Adding -oA nmap option to scan option
+		NMAP_OPTIONS_ACTIVE_HOSTS="${NMAP_OPTIONS_ACTIVE_HOSTS} -oA ${LOOT_DIR}/nmap-${SCAN_COUNT}-${TODAY}"
 		touch $NMAP_LOOT_FILE
 		#ACTIVE_HOSTS=( $(nmap $NMAP_QUICKSCAN 192.168.1.0/24 | grep "Nmap scan report for" | awk {'print $5'} | awk '{print}' ORS='\t' | sed 's/.$//') ) # Nmap ping scan output as an array of ip addresses
 		ACTIVE_HOSTS=( $(arp-scan --localnet | tail -n +3 | head -n -3 | awk {'print $1'} | awk '{print}' ORS='\t' | sed 's/.$//') ) # Arp-scan output as an array of ip addresses
@@ -437,7 +439,6 @@ function GRAB_NMAP_INTERESTING_HOSTS_LOOT() {
 		nmap $NMAP_OPTIONS_INTERESTING_HOSTS ${INTERESTING_HOSTS[@]} >> $NMAP_INTERESTING_HOSTS_LOOT_FILE && echo "Nmap scan ${#INTERESTING_HOSTS[@]} interesting host with nmap options: \"$NMAP_OPTIONS_INTERESTING_HOSTS\" executed succesfully" >> $LOG_FILE || echo "Nmap scan ${#INTERESTING_HOSTS[@]} interesting host with nmap options: \"$NMAP_OPTIONS_INTERESTING_HOSTS\" failed" >> $LOG_FILE
 	fi
 	return
-}
 
 function GRAB_DIG_LOOT() {
 	if [ "$GRAB_DIG_LOOT" = "true" ]; then
