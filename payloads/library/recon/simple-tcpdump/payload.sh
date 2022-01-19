@@ -15,7 +15,7 @@ DATE=`date +"%Y-%m-%d"`
 TIMESTAMP=`date +"%Y-%m-%d %T"`
 INTERFACE="eth0"
 TIMEOUT="15"
-EMAIL_RECEIPT="jules.bozouklian@epitech.eu"
+EMAIL_RECEIPT="EMAIL@DOMAIN.xyz"
 MUTT_FILE=/root/.muttrc
 
 LED SETUP
