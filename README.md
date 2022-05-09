@@ -9,7 +9,7 @@ The Shark Jack is a portable network attack tool optimized for social engineerin
 
 
 -   [Purchase at Hak5](https://hak5.org/products/shark-jack "Purchase at Hak5")
--   [Documentation](https://docs.hak5.org/hc/en-us/categories/360002117973-Shark-Jack "Documentation")
+-   [Documentation](https://docs.hak5.org/shark-jack/ "Documentation")
 -   [Forums](https://forums.hak5.org/forum/101-shark-jack/ "Forums")
 -   [Discord](https://hak5.org/discord "Discord")
 
