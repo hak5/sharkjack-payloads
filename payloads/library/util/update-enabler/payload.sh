@@ -7,6 +7,7 @@
 # Description:	This payload sets the shark jack to DHCP_CLIENT mode to
 #               allow access to the internet and then enables SSH on the 
 #               shark jack allowing you to SSH into the device an perform updates or download additional tools
+#               It also automatically updates the distfeeds.conf and customfeeds.conf file to fix update errors.
 #
 # Note: As of 07/27/2023 the /etc/opkg/distfeeds.conf file that comes with the stock shark jack is incorrect and will error out.
 #       to fix this remove the original text and add the below.

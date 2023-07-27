@@ -1,13 +1,13 @@
 # Title: Update enabler
 ### Author: n0m4d1k
-### Version: 1.0
+### Version: 2.0
 
 ### Description:
 
-This payload sets the shark jack to DHCP_CLIENT mode toallow access to the internet and then enables SSH on the shark jack allowing you to SSH into the device an perform updates or download additional tools
+This payload sets the shark jack to DHCP_CLIENT mode toallow access to the internet and then enables SSH on the shark jack allowing you to SSH into the device an perform updates or download additional tools. It also automatically updates the distfeeds.conf and customfeeds.conf file to fix update errors.
 
 Note: 
-As of 07/27/2023 the /etc/opkg/distfeeds.conf file that comes with the stock shark jack is incorrect and will error out. I have included the corrected files in this directory. To fix this manually remove the original text and add the below.
+As of 07/27/2023 the /etc/opkg/distfeeds.conf file that comes with the stock shark jack is incorrect and will error out. I have also included the corrected files in this directory. To fix this manually remove the original text and add the below.
 
 ```
 src/gz openwrt_core http://downloads.openwrt.org/releases/18.06.0/targets/ramips/mt76x8/packages
