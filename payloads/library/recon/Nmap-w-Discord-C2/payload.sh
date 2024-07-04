@@ -20,6 +20,7 @@
 # Turn on Discord Integration (Yes = 1, No = 0)
 DISCORD=0
 WEBHOOK='PLACE_DISCORD_WEBHOOK_HERE'
+URL="http://www.example.com"
 # Send Loot as File or Plain Messages (File = 1, Messages = 0)
 AS_FILE=0
 
@@ -31,7 +32,6 @@ fi
 LED SETUP
 NETMODE DHCP_CLIENT
 while ! ifconfig eth0 | grep "inet addr"; do LED Y SOLID; sleep .2; LED M SOLID; sleep .8; done
-URL="http://www.example.com"
 while ! wget $URL -qO /dev/null; do sleep 1; done
 GET_GATEWAY=$(route -n | grep 'UG[ \t]' | awk '{print $2}')
 while [ $GET_GATEWAY == "" ]; do sleep 1; done
