@@ -35,7 +35,8 @@ LED ATTACK
 tcpdump -i $INTERFACE -w $LOOT_DIR/net-traffic_$COUNT.txt &
 
 # sleep command will let it run for 1 minute, or you can edit to run however much you want
-sleep 60
+seconds=60
+sleep $seconds
 
 # end capture
 killall tcpdump
