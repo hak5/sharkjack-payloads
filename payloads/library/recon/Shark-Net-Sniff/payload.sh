@@ -15,6 +15,8 @@
 
 LOOT_DIR=/root/loot/pcaps
 INTERFACE="eth0"
+seconds=60
+
 
 # preparing for capture
 
@@ -34,8 +36,7 @@ LED ATTACK
 # using tcpdump to capture network traffic and save to loot directory
 tcpdump -i $INTERFACE -w $LOOT_DIR/net-traffic_$COUNT.txt &
 
-# sleep command will let it run for 1 minute, or you can edit to run however much you want
-seconds=60
+# sleep command will let it run for amount of seconds selected
 sleep $seconds
 
 # end capture
