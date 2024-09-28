@@ -312,7 +312,7 @@ function setup_shark(){
     [[ -e $SSHKEYPATH ]] && printf "\n%s\n" "[!] $SSHKEYPATH does not exist" && sleep 2 && main_menu
   fi
   if [[ -z $SSHKEYPATH ]]; then
-    ssh-copy-id -i root@172.16.24.1
+    ssh-copy-id "root@172.16.24.1"
   else
     ssh-copy-id -i $SSHKEYPATH "root@172.16.42.1"
   fi
