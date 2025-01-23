@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Title:        Flood Gateway (DDoS)
+# Title:        Flood Gateway (Stress Test)
 # Author:       InfoSecREDD
 # Version:      1.2
 #
@@ -35,7 +35,7 @@ ATTACK="SYN"
 # Port to Attack.
 PORT="80"
 
-# Amount of time you wish to DDoS your Gateway. (Hint: 600 seconds is 10 minutes)
+# Amount of time you wish to Stress Test your Gateway. (Hint: 600 seconds is 10 minutes)
 DURATION="30"
 
 # Turn to YES if you want to connect to C2 BEFORE Attack.
@@ -44,7 +44,7 @@ C2_CONNECTION="YES"
 ## Settings for SLOWLORIS Attack. (Only supports HTTP Attack, NOT SSL - HTTPS)
 HTTP_CONNECTIONS="200"
 
-TEST_URL="http://www.google.com"
+TEST_URL="http://website-url-here.com"
 
 # Start the Script! Man your Stations!
 LED SETUP;
