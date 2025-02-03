@@ -140,7 +140,7 @@ function push_payload(){
   locate_shark
   echo -e "\n [+] Pushing payload to device..."
   EXPANDEDPATH=$(echo $PAYLOADPATH |cd)
-  scp -r $EXPANDEDPATH root@172.16.24.1:/root/payload/payload.txt && echo -e "\n [+] Payload copied to Shark" || echo -e "\n [!] ERROR copying paylod to Shark"
+  scp -r $EXPANDEDPATH root@172.16.24.1:/root/payload/payload.txt && echo -e "\n [+] Payload copied to Shark" || echo -e "\n [!] ERROR copying payload to Shark"
   exitscript 0
 }
 
