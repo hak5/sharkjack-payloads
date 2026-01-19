@@ -314,9 +314,32 @@ function setup_shark(){
   if [[ -z $SSHKEYPATH ]]; then
     ssh-copy-id -i root@172.16.24.1
   else
-    ssh-copy-id -i $SSHKEYPATH "root@172.16.42.1"
+    ssh-copy-id -i $SSHKEYPATH "root@172.16.24.1"
   fi
   exitscript 0
+}
+
+function online_shark() {
+    locate_shark
+    echo -e "\nConfiguring host and shark for internet access\n"
+    IFIP=$(ip ad show $IFACE | grep inet | awk '{print $2}' | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}")
+    
+    # configuring shark
+    ssh root@172.16.24.1 "ip route add default via $IFIP dev eth0 && echo 'nameserver 9.9.9.9' > /etc/resolv.conf"
+    echo -e "\nAdded Quad9 (9.9.9.9) as DNS-Resolver, modify in sharks' /etc/resolv.conf if needed"
+
+    # configuring host
+    UPLINK=$(ip route show default | awk '{print $5}' | grep -v $IFACE)
+    echo -e "\nUsing interface $UPLINK for uplink"
+    iptables -A FORWARD -o $UPLINK -i $IFACE -s 172.16.24.0/24 -m conntrack --ctstate NEW -j ACCEPT
+    iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+    iptables -t nat -F POSTROUTING
+    iptables -t nat -A POSTROUTING -o $UPLINK -j MASQUERADE
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+    # making sure the os does not try to route through the shark 
+    ip route del default via 172.16.24.1 &>/dev/null
+    
+    exitscript 0
 }
 
 function main_menu() {
@@ -332,6 +355,7 @@ function main_menu() {
    [$(tput bold)G$(tput sgr0)]et loot saved on Shark Jack\n\n\
    [$(tput bold)R$(tput sgr0)]eset known_hosts keys for the Shark Jack on this system\n\
    [$(tput bold)S$(tput sgr0)]etup ssh keys for easy access\n\
+   [$(tput bold)O$(tput sgr0)]nline mode for downloading packages etc.\n\
    [$(tput bold)Q$(tput sgr0)]uit\n\n"
 
    read -r -sn1 key
@@ -342,10 +366,12 @@ function main_menu() {
           [gG]) get_loot;;
           [rR]) reset_key;;
           [sS]) setup_shark;;
+          [oO]) online_shark;;
           [qQ]) exitscript 0;;
           *) main_menu;;
    esac
 }
+
 
 # Validate priv / iptables
 root_check
